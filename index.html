@@ -8,14 +8,32 @@
     <link rel="manifest" href="manifest.json">
 </head>
 <body>
-    <div id="app">
-        <h1>Quiz Game</h1>
-        <div id="score">Score: 0</div>
-        <div id="question-container">
-            <div id="question"></div>
-            <div id="options"></div>
+    <div id="player-turn">Player 1's Turn</div>
+    
+    <div id="question-container">
+        <div id="question"></div>
+        <div id="options"></div>
+    </div>
+    
+    <div id="scoreboard">
+        <div id="player1" class="player-score">
+            <div class="score">0</div>
+            <div class="name">Player 1</div>
+        </div>
+        <div id="player2" class="player-score">
+            <div class="score">0</div>
+            <div class="name">Player 2</div>
+        </div>
+        <div id="player3" class="player-score">
+            <div class="score">0</div>
+            <div class="name">Player 3</div>
+        </div>
+        <div id="player4" class="player-score">
+            <div class="score">0</div>
+            <div class="name">Player 4</div>
         </div>
     </div>
+
     <script src="app.js"></script>
 </body>
 </html>
