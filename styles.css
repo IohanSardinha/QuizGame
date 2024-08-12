@@ -2,7 +2,6 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     height: 100vh;
-    background-color: #f0f0f0;
     position: relative;
     display: flex;
     flex-direction: column;
@@ -32,6 +31,14 @@ body {
     }
 }
 
+#background {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: -2;
+    background-color: #f0f0f0;
+    opacity: 0.7;
+}
 
 #scoreboard {
     position: absolute;
@@ -50,10 +57,10 @@ body {
     text-align: center;
     box-sizing: border-box;
 
-    border-radius: 50%; /* Circle */
-    width: 100px; /* Increase size */
-    height: 100px; /* Increase size */
-    border: 2px solid #787978;
+    border-radius: 50%; 
+    width: 100px; 
+    height: 100px; 
+    /* border: 2px solid #787978; */
 }
 
 .player-score .score {
@@ -81,7 +88,7 @@ body {
 }
 
 #player3 {
-    bottom: 1px;
+    bottom: 10px;
     left: 10px;
     background-color: #9999ff; /* Light blue */
 }
@@ -164,6 +171,19 @@ body {
 #options button.wrong {
     background-color: #F44336;
     color: white;
+    animation: wrong-answer 0.6s;
+}
+
+@keyframes wrong-answer {
+    0%, 100% {
+        transform: translateX(0);
+    }
+    10%, 30%, 50%, 70%, 90% {
+        transform: translateX(-1%);
+    }
+    20%, 40%, 60%, 80% {
+        transform: translateX(1%);
+    }
 }
 
 .button-option-letter {
