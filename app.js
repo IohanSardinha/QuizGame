@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let scoreMultiplier = 1;
     let scoreReduction = 0.75;
     let questionScore = 100;
+    let playerTimeToAnswer = 5;
     let wrongOptions = []
 
     let playerNames = ["Player 1", "Player 2", "Player 3", "Player 4"]
@@ -23,6 +24,34 @@ document.addEventListener('DOMContentLoaded', () => {
             nextQuestion();
         });
 
+    function countDownDisplay(id, val, interval, finish, player){
+        if(player != currentPlayer && player !== false)
+            return
+
+        if(val > 0){
+            document.getElementById(id).innerHTML = val;
+            setTimeout(()=>countDownDisplay(id, val-1, interval, finish, player), interval);
+        }
+        else{
+            setTimeout(() => {
+                document.getElementById(id).innerHTML = "";
+                finish()
+            }, interval/3);
+        }
+    }
+
+    function setPlayerTurn(player){
+        document.getElementById("player-turn-display").innerHTML = `${playerNames[player-1]}'s turn!`;
+        document.getElementById("background").style.backgroundColor = playerColors[player-1];
+        countDownDisplay("player-turn-counter", playerTimeToAnswer, 1000, nextPlayer, currentPlayer)
+    }
+
+    function clearTurn(){
+        document.getElementById("player-turn-display").innerHTML = ""
+        document.getElementById("player-turn-counter").innerHTML = ""
+        document.getElementById("background").style.backgroundColor = "#f0f0f0"
+    }
+
     function handlePlayerSelection(player){
         if(!roundBlocked.includes(player)){
             playerQueue.push(player);
@@ -30,8 +59,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if(currentPlayer == null){
                 currentPlayer = playerQueue.splice(0,1);
-                document.getElementById("player-turn").innerHTML = `${playerNames[player-1]}'s turn!`;
-                document.getElementById("background").style.backgroundColor = playerColors[player-1];
+                setPlayerTurn(player)
+            }
+        }
+    }
+
+    function nextPlayer(){
+        if(playerQueue.length == 0 && roundBlocked.length == playerNames.length){
+            clearTurn()
+            
+            document.getElementById(`option-${currentQuestion.answer}`).classList.add('correct')
+            
+            setTimeout(nextQuestion, 1500);
+        }
+        else{
+            if(playerQueue.length > 0){
+                currentPlayer = playerQueue.splice(0,1);
+                setPlayerTurn(currentPlayer)
+            }else{
+                currentPlayer = null;
+                clearTurn()
             }
         }
     }
@@ -51,36 +98,22 @@ document.addEventListener('DOMContentLoaded', () => {
             optionButton.classList.add('wrong')
             wrongOptions.push(option)
 
-            if(playerQueue.length == 0 && roundBlocked.length == playerNames.length){
-                document.getElementById("player-turn").innerHTML = ""
-                document.getElementById("background").style.backgroundColor = "#f0f0f0"
-                
-                document.getElementById(`option-${currentQuestion.answer}`).classList.add('correct')
-                
-                setTimeout(nextQuestion, 1500);
-            }
-            else if(playerQueue.length > 0){
-                currentPlayer = playerQueue.splice(0,1);
-                document.getElementById("player-turn").innerHTML = `${playerNames[currentPlayer-1]}'s turn!`
-                document.getElementById("background").style.backgroundColor = playerColors[currentPlayer-1];
-            }else{
-                currentPlayer = null;
-                document.getElementById("player-turn").innerHTML = ""
-                document.getElementById("background").style.backgroundColor = "#f0f0f0"
-            }
+            nextPlayer();
         }
     }
 
     function handlePlayerInput(event) {
         const playerKey = event.key;
+        console.log(playerKey)
         if (['1', '2', '3', '4'].includes(playerKey)) {
             handlePlayerSelection(parseInt(playerKey))  
 
         } else if (ALPHABET.includes(playerKey.toUpperCase())) {
             handlePlayerOption(playerKey.toUpperCase())
             
+        }else if(playerKey === "ArrowRight"){
+            nextQuestion()
         }
-        console.log(playerQueue)
     }
     
 
@@ -123,8 +156,7 @@ document.addEventListener('DOMContentLoaded', () => {
         playerQueue = [];
         roundBlocked = [];
         wrongOptions = []
-        document.getElementById("player-turn").innerHTML = "";
-        document.getElementById("background").style.backgroundColor = "#f0f0f0"
+        clearTurn()
 
         for(let i = 0; i < playerScores.length; i++){
             document.querySelector(`#player${i+1} .score`).innerHTML = playerScores[i];
