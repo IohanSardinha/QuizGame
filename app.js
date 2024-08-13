@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let playerTimeToAnswer = 10;
     let wrongOptions = []
     let turnStarted = false;
-    let gameDuration = 1;
+    let gameDuration = 10;
     let roundCount = 0;
     let isGameOver = false;
 
