@@ -9,6 +9,29 @@ body {
     align-items: center;
     overflow: hidden;
 }
+
+#next-player{
+    position: absolute;
+    font-size: 15px;
+    bottom: 20%;
+    opacity: 0.7;
+    animation: pulseOpacity 3s infinite;
+    font-weight: bold;
+}
+
+@keyframes pulseOpacity {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.3;
+        transform: scale(0.95);
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
 #player-turn {
     position: absolute;
     top: 10%;
@@ -23,9 +46,11 @@ body {
 }
 
 #center-display{
+    color: #ffc400;
     display: none;
-    font-size: 100px;
+    font-size: 150px;
     font-weight: bolder;
+    animation: pulseRev 1s infinite backwards;
 }
 
 #player-turn-counter{
@@ -141,8 +166,6 @@ body {
     padding: 0 20px;
 }
 
-
-
 #question {
     font-size: 32px;
     font-weight: bold;
@@ -236,3 +259,221 @@ body {
     color: white;
 }
 
+/* 
+##########################################################################
+#########################PODIUM########################################### 
+##########################################################################
+*/
+
+#game-over {
+    display: none;
+    text-align: center;
+    margin-top: 50px;
+}
+
+#game-over p {
+    font-size: 32px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    animation: fall 1s ease;
+    transform: translateY(-200%);
+}
+
+@keyframes fall {
+    0%{
+        transform: translateY(-500%);
+    }
+}
+
+#game-over button {
+    margin-top: 30px;
+    padding: 15px 30px;
+    font-size: 18px;
+    font-weight: bold;
+    color: white;
+    background-color: #999999;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    animation: appear 2s;
+}
+
+#game-over button:hover {
+    background-color: #7c7a7a;
+}
+
+#game-over button:focus {
+    outline: none;
+}
+
+#game-over button:active {
+    background-color: #c5c4c4;
+}
+
+.podium-score {
+    margin-bottom: 10px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+
+#podium {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    margin-top: 50px;
+}
+
+.podium-spot {
+    width: 150px;
+    margin: 0 10px;
+    text-align: center;
+    position: relative;
+    padding-top: 40px;
+    transform-origin: bottom center;
+}
+
+.podium-spot .position {
+    position: absolute;
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.podium-spot .podium-score {
+    margin-bottom: 10px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.podium-spot .player-name {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.first {
+    height: 200px;
+    background-color: gold;
+    animation: grow 1.2s;
+}
+
+.second {
+    height: 150px;
+    background-color: silver;
+    animation: grow 1s;
+}
+
+.third {
+    height: 100px;
+    background-color: #cd7f32; /* Bronze color */
+    animation: grow 0.8s;
+}
+
+@keyframes grow {
+    0%{
+        transform: scaleY(0%);
+    }
+    100%{
+        transform: scaleY(100%);
+    }
+}
+
+/* Styling for the podium blocks */
+.podium-spot {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.podium-spot::before {
+    content: '';
+    width: 100%;
+    height: 100%;
+    background: inherit;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+/* Fourth place styling */
+#fourth-place {
+    margin-top: 20px;
+    text-align: center;
+    animation: appear 1.2s;
+}
+
+@keyframes appear {
+    0%{
+        opacity: 0;
+    }
+    25%{
+        opacity: 0;
+    }
+    100%{
+        opacity: 1;
+    }
+}
+
+#fourth-place .position {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+#fourth-place .podium-score {
+    font-size: 16px;
+    margin-top: 5px;
+}
+
+#fourth-place .player-name {
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 5px;
+}
+
+.first .position{
+    animation: jumps 0.8s 1.2s infinite ease-in-out;
+}
+
+.second .position{
+    animation: shake-podium 2s 1.2s infinite linear;
+}
+
+.third .position{
+    animation: squish 5s 1.2s infinite;
+    transform-origin: bottom center;
+}
+
+@keyframes jumps {
+    0%, 100%{
+        transform: translateY(0%) translateX(-50%);
+    }
+    50%{
+        transform: translateY(-100%) translateX(-50%);
+    }
+}
+
+@keyframes shake-podium {
+    25%{
+        transform: translateX(-50%) rotate(15deg);
+    }
+    75%{
+        transform: translateX(-50%) rotate(-15deg);
+    }
+}
+
+@keyframes squish {
+    0%, 100%{
+        transform: scaleY(100%) translateX(-50%);
+    }
+    30%,40%,50%,60%,70%{
+        transform: scaleY(50%) translateX(-50%);
+    }
+    35%, 45%, 55%,65%{
+        transform: scaleY(60%) translateX(-50%);
+    }
+}

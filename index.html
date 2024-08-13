@@ -22,6 +22,8 @@
         <div id="question"></div>
         <div id="options"></div>
     </div>
+
+    <div id="next-player"></div>
     
     <div id="scoreboard">
         <div id="player1" class="player-score">
@@ -41,6 +43,37 @@
             <div class="name">Player 4</div>
         </div>
     </div>
+
+    <div id="game-over">
+        <p>Quiz Over!</p>
+        <div id="podium">
+            <br>
+            <div class="podium-spot second">
+                <div class="position">2nd</div>
+                <div class="podium-score" id="second-place-score">80</div>
+                <div class="player-name" id="second-place">Player 2</div>
+            </div>
+            <div class="podium-spot first">
+                <div class="position">1st</div>
+                <div class="podium-score" id="first-place-score">100</div>
+                <div class="player-name" id="first-place">Player 1</div>
+            </div>
+            <div class="podium-spot third">
+                <div class="position">3rd</div>
+                <div class="podium-score" id="third-place-score">70</div>
+                <div class="player-name" id="third-place">Player 3</div>
+            </div>
+        </div>
+        
+        <div id="fourth-place">
+            <div class="position">4th</div>
+            <div class="podium-score" id="fourth-place-score">60</div>
+            <div class="player-name" id="fourth-place-name">Player 4</div>
+        </div>
+
+        <button id="play-again">Play Again<br>(press anything)</button>
+    </div>
+    
 
     <script src="app.js"></script>
 </body>

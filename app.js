@@ -8,11 +8,14 @@ document.addEventListener('DOMContentLoaded', () => {
     let roundBlocked = []
     let currentPlayer = null;
     let scoreMultiplier = 1;
-    let scoreReduction = 0.75;
+    let scoreReduction = 0.25;
     let questionScore = 100;
     let playerTimeToAnswer = 10;
     let wrongOptions = []
     let turnStarted = false;
+    let gameDuration = 1;
+    let roundCount = 0;
+    let isGameOver = false;
 
     let playerNames = ["Player 1", "Player 2", "Player 3", "Player 4"]
     let playerColors = ["#ff9999","#99ff99","#9999ff","#ffff99"]
@@ -51,22 +54,27 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById("player-turn-display").innerHTML = ""
         document.getElementById("player-turn-counter").innerHTML = ""
         document.getElementById("background").style.backgroundColor = "#f0f0f0"
+        document.getElementById("next-player").innerHTML = ""
     }
 
     function handlePlayerSelection(player){
         if(!roundBlocked.includes(player)){
             playerQueue.push(player);
-            roundBlocked.push(player)
+            roundBlocked.push(player);
 
             if(currentPlayer == null){
                 currentPlayer = playerQueue.splice(0,1);
                 setPlayerTurn(player)
             }
+
+            if(playerQueue.length > 0){
+                document.getElementById("next-player").innerHTML = `Next: ${playerNames[playerQueue[0]-1]}`
+            }
         }
     }
 
     function nextPlayer(){
-        if(playerQueue.length == 0 && roundBlocked.length == playerNames.length){
+        if((playerQueue.length == 0 && roundBlocked.length == playerNames.length) || (wrongOptions.length == currentQuestion.options.length - 1)){
             clearTurn()
             
             document.getElementById(`option-${currentQuestion.answer}`).classList.add('correct')
@@ -77,6 +85,10 @@ document.addEventListener('DOMContentLoaded', () => {
             if(playerQueue.length > 0){
                 currentPlayer = playerQueue.splice(0,1);
                 setPlayerTurn(currentPlayer)
+                if(playerQueue.length > 0)
+                    document.getElementById("next-player").innerHTML = `Next: ${playerNames[playerQueue[0]-1]}`
+                else
+                    document.getElementById("next-player").innerHTML = ``
             }else{
                 currentPlayer = null;
                 clearTurn()
@@ -95,7 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
             setTimeout(nextQuestion, 1000);
         }
         else{
-            scoreMultiplier *= scoreReduction;
+            scoreMultiplier -= scoreReduction;
             optionButton.classList.add('wrong')
             wrongOptions.push(option)
 
@@ -104,6 +116,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function handlePlayerInput(event) {
+        if(isGameOver)
+            newGame()
+
         if(!turnStarted)
             return
         
@@ -156,6 +171,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function resetTurn(){
+        scoreMultiplier = 1;
         currentPlayer = null;
         playerQueue = [];
         roundBlocked = [];
@@ -171,11 +187,6 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('question-container').style.display = "flex";
         document.getElementById('center-display').style.display = "none";
 
-        if (questions.length === 0) {
-            document.getElementById('question-container').innerHTML = '<h2>Quiz Over!</h2>';
-            return;
-        }
-
         questionIndex = Math.floor(Math.random() * questions.length);
         currentQuestion = questions.splice(questionIndex, 1)[0];
         
@@ -188,15 +199,67 @@ document.addEventListener('DOMContentLoaded', () => {
             optionsDiv.appendChild(createOption(index, option));
         });
         turnStarted = true;
+
+        console.log(currentQuestion)
+    }
+
+    function gameOver(){
+
+        setTimeout(() => {isGameOver = true; }, 2000);
+
+        document.getElementById('game-over').style.display = "block";
+        document.getElementById('question-container').style.display = "none";
+        document.getElementById('scoreboard').style.display = "none";
+        players = playerScores.map((v, i)=>{
+            return {"score":v, "name":playerNames[i], "color":playerColors[i]}
+        })
+        
+        players.sort((p1,p2)=>p2.score - p1.score)
+
+        document.getElementById('first-place-score').innerHTML = players[0].score
+        document.getElementById('first-place').innerHTML = players[0].name
+        
+        document.getElementById('second-place-score').innerHTML = players[1].score
+        document.getElementById('second-place').innerHTML = players[1].name
+        document.querySelector('.second').style.height = `${200*(players[1].score/players[0].score)}px`
+
+        document.getElementById('third-place-score').innerHTML = players[2].score
+        document.getElementById('third-place').innerHTML = players[2].name
+        document.querySelector('.third').style.height = `${200*(players[2].score/players[0].score)}px`
+
+        document.getElementById('fourth-place-score').innerHTML = players[3].score
+        document.getElementById('fourth-place-name').innerHTML = players[3].name
+        
+        document.getElementById('play-again').onclick = newGame
+    }
+
+    function newGame(){
+        playerScores = [0,0,0,0]
+        roundCount = 0
+        document.getElementById('game-over').style.display = "none";
+        document.getElementById('scoreboard').style.display = "block";
+
+        isGameOver = false;
+
+        nextQuestion()
     }
 
     function nextQuestion() {
         turnStarted = false;
         resetTurn();
 
+        console.log(roundCount)
+
+        if (roundCount >= gameDuration) {
+            gameOver()
+            return;
+        }
+
+        roundCount++;
+
         document.getElementById('question-container').style.display = "none";
         document.getElementById('center-display').style.display = "flex";
 
-        setTimeout(()=>countDownDisplay("center-display", 3, 1000, nextQuestionFinish, false), 1000)
+        setTimeout(()=>countDownDisplay("center-display", 3, 1000, nextQuestionFinish, false), 250)
     }
 });
