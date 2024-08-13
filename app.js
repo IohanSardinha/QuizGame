@@ -10,8 +10,9 @@ document.addEventListener('DOMContentLoaded', () => {
     let scoreMultiplier = 1;
     let scoreReduction = 0.75;
     let questionScore = 100;
-    let playerTimeToAnswer = 5;
+    let playerTimeToAnswer = 10;
     let wrongOptions = []
+    let turnStarted = false;
 
     let playerNames = ["Player 1", "Player 2", "Player 3", "Player 4"]
     let playerColors = ["#ff9999","#99ff99","#9999ff","#ffff99"]
@@ -103,6 +104,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function handlePlayerInput(event) {
+        if(!turnStarted)
+            return
+        
         const playerKey = event.key;
         console.log(playerKey)
         if (['1', '2', '3', '4'].includes(playerKey)) {
@@ -163,8 +167,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    function nextQuestion() {
-        resetTurn();
+    function nextQuestionFinish(){
+        document.getElementById('question-container').style.display = "flex";
+        document.getElementById('center-display').style.display = "none";
 
         if (questions.length === 0) {
             document.getElementById('question-container').innerHTML = '<h2>Quiz Over!</h2>';
@@ -182,5 +187,16 @@ document.addEventListener('DOMContentLoaded', () => {
         currentQuestion.options.forEach((option, index) => {
             optionsDiv.appendChild(createOption(index, option));
         });
+        turnStarted = true;
+    }
+
+    function nextQuestion() {
+        turnStarted = false;
+        resetTurn();
+
+        document.getElementById('question-container').style.display = "none";
+        document.getElementById('center-display').style.display = "flex";
+
+        setTimeout(()=>countDownDisplay("center-display", 3, 1000, nextQuestionFinish, false), 1000)
     }
 });

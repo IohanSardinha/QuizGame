@@ -1,5 +1,5 @@
 body {
-    font-family: Arial, sans-serif;
+    font-family: Rockwell Extra Bold, Rockwell Bold, monospace;
     margin: 0;
     height: 100vh;
     position: relative;
@@ -20,6 +20,12 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+
+#center-display{
+    display: none;
+    font-size: 100px;
+    font-weight: bolder;
 }
 
 #player-turn-counter{
