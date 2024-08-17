@@ -10,10 +10,28 @@ body {
     overflow: hidden;
 }
 
+.main-menu{
+    display: none;
+    position: absolute;
+    justify-content: center;
+    text-align: center;
+    border-radius: 10px;
+    height: 80vh;
+    width: 80vw;
+    background-color: #e6e2e2;
+    border: 2px dashed;
+}
+
+/* 
+##########################################################################
+#########################GAME########################################### 
+##########################################################################
+*/
+
 #next-player{
     position: absolute;
-    font-size: 15px;
-    bottom: 20%;
+    font-size: 2vh;
+    bottom: 15vh;
     opacity: 0.7;
     animation: pulseOpacity 3s infinite;
     font-weight: bold;
@@ -34,10 +52,10 @@ body {
 
 #player-turn {
     position: absolute;
-    top: 10%;
+    top: 5%;
     left: 50%;
     transform: translateX(-50%);
-    font-size: 24px;
+    font-size: 2.3vh;
     font-weight: bold;
     text-align: center;
     display: flex;
@@ -48,14 +66,14 @@ body {
 #center-display{
     color: #ffc400;
     display: none;
-    font-size: 150px;
+    font-size: 20vh;
     font-weight: bolder;
     animation: pulseRev 1s infinite backwards;
 }
 
 #player-turn-counter{
-    margin-top: 25%;
-    font-size: 35px;
+    margin-top: 13%;
+    font-size: 3.5vh;
     animation: pulseRev 1s infinite;
 }
 
@@ -97,6 +115,7 @@ body {
 }
 
 #scoreboard {
+    /* display: none; */
     position: absolute;
     width: 100%;
     height: 100%;
@@ -114,18 +133,18 @@ body {
     box-sizing: border-box;
 
     border-radius: 50%; 
-    width: 100px; 
-    height: 100px; 
+    width: 15vh; 
+    height: 15vh; 
     /* border: 2px solid #787978; */
 }
 
 .player-score .score {
-    font-size: 30px;
+    font-size: 3.5vh;
     font-weight: bold;
 }
 
 .player-score .name {
-    font-size: 10px;
+    font-size: 1.5vh;
     margin-top: 5%;
 }
 
@@ -167,10 +186,10 @@ body {
 }
 
 #question {
-    font-size: 32px;
+    font-size: 3vh;
     font-weight: bold;
-    margin-bottom: 30px;
-    max-width: 800px;
+    margin-bottom: 2vh;
+    max-width: 90%;
     animation: shake 10s infinite;
 }
 
@@ -201,8 +220,8 @@ body {
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    padding: 15px 20px;
-    font-size: 18px;
+    padding: 1.5vh;
+    font-size: 1.8vh;
     font-weight: normal;
     border: none;
     border-radius: 8px;
@@ -242,7 +261,7 @@ body {
 
 .button-option-letter {
     font-weight: bold;
-    font-size: 20px;
+    font-size: 3vh;
     margin-right: 20px;
     color: #333;
 }
@@ -250,7 +269,7 @@ body {
 .button-option-text {
     /* width: 90%;
     text-align: center; */
-    font-size: 18px;
+    font-size: 2.5vh;
     color: #333;
 }
 
@@ -268,13 +287,13 @@ body {
 #game-over {
     display: none;
     text-align: center;
-    margin-top: 50px;
+    margin-top: 10vh;
 }
 
 #game-over p {
-    font-size: 32px;
+    font-size: 4vh;
     font-weight: bold;
-    margin-bottom: 20px;
+    /* margin-bottom: 20px; */
     animation: fall 1s ease;
     transform: translateY(-200%);
 }
@@ -286,9 +305,9 @@ body {
 }
 
 #game-over button {
-    margin-top: 30px;
-    padding: 15px 30px;
-    font-size: 18px;
+    margin-top: 3vh;
+    padding: 1.5vh 3vw;
+    font-size: 2vh;
     font-weight: bold;
     color: white;
     background-color: #999999;
@@ -322,52 +341,52 @@ body {
     display: flex;
     justify-content: center;
     align-items: flex-end;
-    margin-top: 50px;
+    /* margin-top: 50px; */
 }
 
 .podium-spot {
-    width: 150px;
-    margin: 0 10px;
+    width: 10vw;
+    margin: 0 0.5vw;
     text-align: center;
     position: relative;
-    padding-top: 40px;
+    /* padding-top: 40px; */
     transform-origin: bottom center;
 }
 
 .podium-spot .position {
     position: absolute;
-    top: -30px;
+    top: -4vh;
     left: 50%;
     transform: translateX(-50%);
-    font-size: 24px;
+    font-size: 3.3vh;
     font-weight: bold;
 }
 
 .podium-spot .podium-score {
-    margin-bottom: 10px;
-    font-size: 20px;
+    margin-bottom: 1vh;
+    font-size: 2.5vh;
     font-weight: bold;
 }
 
 .podium-spot .player-name {
-    font-size: 18px;
+    font-size: 2vh;
     font-weight: bold;
 }
 
 .first {
-    height: 200px;
+    height: 30vh;
     background-color: gold;
     animation: grow 1.2s;
 }
 
 .second {
-    height: 150px;
+    height: 15vh;
     background-color: silver;
     animation: grow 1s;
 }
 
 .third {
-    height: 100px;
+    height: 10vh;
     background-color: #cd7f32; /* Bronze color */
     animation: grow 0.8s;
 }
@@ -402,7 +421,7 @@ body {
 
 /* Fourth place styling */
 #fourth-place {
-    margin-top: 20px;
+    margin-top: 2vh;
     text-align: center;
     animation: appear 1.2s;
 }
@@ -420,19 +439,20 @@ body {
 }
 
 #fourth-place .position {
-    font-size: 18px;
+    font-size: 2vh;
     font-weight: bold;
 }
 
 #fourth-place .podium-score {
-    font-size: 16px;
-    margin-top: 5px;
+    font-size: 1.8vh;
+    margin-top: 0.1vh;
+    margin-bottom: 0vh;
 }
 
 #fourth-place .player-name {
-    font-size: 16px;
+    font-size: 1.8vh;
     font-weight: bold;
-    margin-top: 5px;
+    margin-top: 0.1vh;
 }
 
 .first .position{

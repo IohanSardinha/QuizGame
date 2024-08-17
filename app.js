@@ -122,8 +122,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if(!turnStarted)
             return
         
+        console.log(questionScore, scoreMultiplier)
+
         const playerKey = event.key;
-        console.log(playerKey)
         if (['1', '2', '3', '4'].includes(playerKey)) {
             handlePlayerSelection(parseInt(playerKey))  
 
@@ -199,8 +200,6 @@ document.addEventListener('DOMContentLoaded', () => {
             optionsDiv.appendChild(createOption(index, option));
         });
         turnStarted = true;
-
-        console.log(currentQuestion)
     }
 
     function gameOver(){
@@ -221,11 +220,11 @@ document.addEventListener('DOMContentLoaded', () => {
         
         document.getElementById('second-place-score').innerHTML = players[1].score
         document.getElementById('second-place').innerHTML = players[1].name
-        document.querySelector('.second').style.height = `${200*(players[1].score/players[0].score)}px`
+        document.querySelector('.second').style.height = `${30*((players[1].score+1)/(players[0].score+1))}vh`
 
         document.getElementById('third-place-score').innerHTML = players[2].score
         document.getElementById('third-place').innerHTML = players[2].name
-        document.querySelector('.third').style.height = `${200*(players[2].score/players[0].score)}px`
+        document.querySelector('.third').style.height = `${30*((players[2].score+1)/(players[0].score+1))}vh`
 
         document.getElementById('fourth-place-score').innerHTML = players[3].score
         document.getElementById('fourth-place-name').innerHTML = players[3].name
@@ -247,8 +246,6 @@ document.addEventListener('DOMContentLoaded', () => {
     function nextQuestion() {
         turnStarted = false;
         resetTurn();
-
-        console.log(roundCount)
 
         if (roundCount >= gameDuration) {
             gameOver()
