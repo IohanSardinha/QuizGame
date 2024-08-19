@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     let ALPHABET = Array.from({ length: 26 }, (v, i) => String.fromCharCode(65 + i));
     let questions = [];
     let currentQuestion = null;
@@ -20,13 +20,121 @@ document.addEventListener('DOMContentLoaded', () => {
     let playerNames = ["Player 1", "Player 2", "Player 3", "Player 4"]
     let playerColors = ["#ff9999","#99ff99","#9999ff","#ffff99"]
 
+    const shuffle = (array) => { 
+        for (let i = array.length - 1; i > 0; i--) { 
+          const j = Math.floor(Math.random() * (i + 1)); 
+          [array[i], array[j]] = [array[j], array[i]]; 
+        } 
+        return array; 
+      }; 
+
     fetch('questions.csv')
         .then(response => response.text())
         .then(data => {
             questions = parseCSV(data);
             document.addEventListener('keydown', handlePlayerInput);
-            nextQuestion();
+            setUpMainMenu();
         });
+
+    async function newGame(){
+
+        gameDuration = document.querySelector('input[name="turns"]:checked').value;
+
+        for(let i = 1; i <= playerNames.length; i++){
+            const el = document.getElementById(`player-name-input-${i}`)
+            playerNames[i-1] = el.value || el.placeholder;
+            document.getElementById(`player-name-${i}`).innerHTML = playerNames[i-1]
+        }
+
+        if(document.getElementById("question-data-source").selectedIndex == 1){
+            const selectedCategories = [];
+            const checkboxes = document.querySelectorAll('input[name="open-trivia-category"]:checked');
+
+            checkboxes.forEach((checkbox) => {
+                selectedCategories.push(checkbox.value);
+            });
+
+
+            document.getElementById("loading-popup").style.visibility = "visible";
+            document.getElementById("loading-bar").classList.add("loading-animation");
+            document.getElementById("loading-bar").style.animationDuration = `${(checkboxes.length)*5}s`;
+
+            const difficulty = document.querySelector('input[name="open-trivia-difficulty"]:checked').value;
+
+            let OTDBQuestions = []
+
+            for(let [i, category] of selectedCategories.entries()){
+                const requestURL = `https://opentdb.com/api.php?type=multiple&amount=${gameDuration}${difficulty.length > 0 ? ("&difficulty="+difficulty):""}&category=${category}`;
+
+                const requesQuestions = (await(await fetch(requestURL)).json()).results;
+                OTDBQuestions = OTDBQuestions.concat(requesQuestions)
+
+                if(i != selectedCategories.length-1) await new Promise(resolve=>setTimeout(resolve,5000));
+            }
+
+            if(OTDBQuestions.length == 0){
+                const requestURL = `https://opentdb.com/api.php?type=multiple&amount=${gameDuration}${difficulty.length > 0 ? ("&difficulty="+difficulty):""}`;
+                const requesQuestions = (await(await fetch(requestURL)).json()).results;
+                OTDBQuestions = OTDBQuestions.concat(requesQuestions)
+            }
+
+            OTDBQuestions = shuffle(OTDBQuestions).slice(0,gameDuration);
+
+            questions = OTDBQuestions.map((question)=>{
+                
+                let O = shuffle(question.incorrect_answers.concat([question.correct_answer]))
+                let A = O.indexOf(question.correct_answer)
+                O.map(decodeURI)
+                let Q = {"question":decodeURI(question.question), options:O, answer:ALPHABET[A]}
+
+                return Q
+            });
+
+            document.getElementById("loading-popup").style.visibility = "hidden";
+            document.getElementById("loading-bar").classList.remove("loading-animation");
+
+        }else if(document.getElementById("question-data-source").selectedIndex == 0){
+            return
+        }
+
+        playerTimeToAnswer = document.getElementById("answer-time-input").value
+
+        playerScores = [0,0,0,0]
+        roundCount = 0
+        document.getElementById('main-menu').style.display = "none";
+        document.getElementById('game-over').style.display = "none";
+        document.getElementById('scoreboard').style.display = "block";
+
+        isGameOver = false;
+
+        nextQuestion()
+    }
+
+    function showExtendedSettings(el){
+        switch(el.selectedIndex){
+            case 0:
+                document.getElementById("open-trivia-settings").style.display = "none";
+                document.getElementById("upload-questions-settings").style.display = "none";
+                break;
+            case 1:
+                document.getElementById("open-trivia-settings").style.display = "block";
+                document.getElementById("upload-questions-settings").style.display = "none";
+                break;
+            case 2:
+                document.getElementById("open-trivia-settings").style.display = "none";
+                document.getElementById("upload-questions-settings").style.display = "block";
+                break;                
+        }
+    }
+
+    function setUpMainMenu(){
+
+        showExtendedSettings(document.getElementById("question-data-source"));
+
+        document.getElementById("question-data-source").addEventListener("change",(e)=>showExtendedSettings(e.target));
+
+        document.getElementById("start-button").onclick = newGame
+    }
 
     function countDownDisplay(id, val, interval, finish, player){
         if(player != currentPlayer && player !== false)
@@ -229,18 +337,10 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('fourth-place-score').innerHTML = players[3].score
         document.getElementById('fourth-place-name').innerHTML = players[3].name
         
-        document.getElementById('play-again').onclick = newGame
-    }
-
-    function newGame(){
-        playerScores = [0,0,0,0]
-        roundCount = 0
-        document.getElementById('game-over').style.display = "none";
-        document.getElementById('scoreboard').style.display = "block";
-
-        isGameOver = false;
-
-        nextQuestion()
+        document.getElementById('play-again').onclick = ()=>{
+            document.getElementById("main-menu").style.display = "block";
+            document.getElementById('game-over').style.display = "none";
+        }
     }
 
     function nextQuestion() {

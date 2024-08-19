@@ -10,39 +10,95 @@
 <body>
     <div id="background"></div>
 
-    <div class="main-menu">
+    <div class="main-menu" id="main-menu">
         <h1>Quiz Game</h1>
-        <div> 
-            <fieldset>
-                <legend>Turns</legend>
-                <input type="radio" name="turns"> 5
-                <input type="radio" name="turns"> 10
-                <input type="radio" name="turns"> 20
-            </fieldset>
+        
+
+        <div class="settings-section">
+            <h5>Duration</h5>
+            <div class="switch-field">
+                <input type="radio" id="5-turns" name="turns" value="5"/>
+                <label for="5-turns">Fast</label>
+                <!-- <input type="radio" id="7-turns" name="turns" value="7"/>
+                <label for="7-turns">7</label> -->
+                <input type="radio" id="10-tuns" name="turns" value="10" checked/>
+                <label for="10-tuns">Normal</label>
+                <input type="radio" id="15-turns" name="turns" value="15"/>
+                <label for="15-turns">Long</label>
+                <input type="radio" id="20-turns" name="turns" value="20" />
+                <label for="20-turns">Marathon</label>
+            </div>
         </div>
 
-        <div>
-            <label>Player 1 Name</label>
-            <input>
+        <div class="settings-section">
+            <label>Player Names:</label>
+            <input type="text" id="player-name-input-1" placeholder="Player 1">
+            <input type="text" id="player-name-input-2" placeholder="Player 2">
+            <input type="text" id="player-name-input-3" placeholder="Player 3">
+            <input type="text" id="player-name-input-4" placeholder="Player 4">
         </div>
-
-        <div>
-            <label>Player 2 Name</label>
-            <input>
+    
+        <div class="settings-section">
+            <label>Answer Time (seconds):</label>
+            <input id="answer-time-input" type="number" value="3" min="3" max="20">
         </div>
-
-        <div>
-            <label>Player 3 Name</label>
-            <input>
+    
+        <div class="settings-section">
+            <label>Question Source:</label>
+            <select id="question-data-source">
+                <option>Default</option>
+                <option>Open Trivia DB</option>
+                <option>Upload CSV</option>
+            </select>
         </div>
-
-        <div>
-            <label>Player 4 Name</label>
-            <input>
+    
+        <div id="open-trivia-settings" class="extra-settings">
+            
+            <div id="open-trivia-difficulty-box">
+                <h5>Difficulty</h5>
+                <div class="switch-field">
+                    <input type="radio" id="difficulty-any" name="open-trivia-difficulty" value="" checked/>
+                    <label for="difficulty-any">Mixed</label>
+                    <input type="radio" id="difficulty-easy" name="open-trivia-difficulty" value="easy"/>
+                    <label for="difficulty-easy">Easy</label>
+                    <input type="radio" id="difficulty-medium" name="open-trivia-difficulty" value="medium" />
+                    <label for="difficulty-medium">Medium</label>
+                    <input type="radio" id="difficulty-hard" name="open-trivia-difficulty" value="hard" />
+                    <label for="difficulty-hard">Hard</label>
+                </div>
+            </div>  
+            
+            <div id="open-trivia-category-box">
+                <h5>Categories</h5>
+                <div class="switch-field" id="switch-field-checkbox">
+                    <input type="checkbox" name="open-trivia-category" id="category-General" value="9" checked><label for="category-General">General Knowledge</label>
+                    <input type="checkbox" name="open-trivia-category" id="category-Science" value="17" checked><label for="category-Science">Science & Nature</label>
+                    <input type="checkbox" name="open-trivia-category" id="category-Geography" value="22" checked><label for="category-Geography">Geography</label>
+                    <input type="checkbox" name="open-trivia-category" id="category-History" value="23" checked><label for="category-History">History</label>
+                    <input type="checkbox" name="open-trivia-category" id="category-Sports" value="21" checked><label for="category-Sports">Sports</label>
+                    <input type="checkbox" name="open-trivia-category" id="category-Art" value="25" checked><label for="category-Art">Art</label>
+                    <input type="checkbox" name="open-trivia-category" id="category-Politics" value="24" checked><label for="category-Politics">Politics</label>
+                    <input type="checkbox" name="open-trivia-category" id="category-Animals" value="27" checked><label for="category-Animals">Animals</label>
+                </div>
+            </div>
         </div>
+    
+        <div id="upload-questions-settings" class="extra-settings">
+            <label>Upload your .csv file <a id="csv-format-instructions" href="#">?</a></label>
+            <input type="file">
+        </div>
+    
+        <button class="start-button" id="start-button">START</button>
 
-        <button>Start</button>
-    </div>
+        <div id="loading-popup" class="popup">
+            <div class="loading-container">
+                <h3>Retreiving Questions...</h3>
+                <div class="loading-bar-container">
+                    <div id="loading-bar"></div>
+                </div>
+            </div>
+        </div>
+    </div>    
     
     <div id="player-turn">
         <div id="player-turn-display"></div>
@@ -62,19 +118,19 @@
     <div id="scoreboard">
         <div id="player1" class="player-score">
             <div class="score">0</div>
-            <div class="name">Player 1</div>
+            <div id="player-name-1" class="name">Player 1</div>
         </div>
         <div id="player2" class="player-score">
             <div class="score">0</div>
-            <div class="name">Player 2</div>
+            <div id="player-name-2" class="name">Player 2</div>
         </div>
         <div id="player3" class="player-score">
             <div class="score">0</div>
-            <div class="name">Player 3</div>
+            <div id="player-name-3" class="name">Player 3</div>
         </div>
         <div id="player4" class="player-score">
             <div class="score">0</div>
-            <div class="name">Player 4</div>
+            <div id="player-name-4" class="name">Player 4</div>
         </div>
     </div>
 

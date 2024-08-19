@@ -1,8 +1,13 @@
+* {
+    box-sizing: border-box;
+    /* overflow-x: hidden; */
+}
+
 body {
     font-family: Rockwell Extra Bold, Rockwell Bold, monospace;
-    margin: 0;
+    margin: 0%;
     height: 100vh;
-    position: relative;
+    /* position: relative; */
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -10,17 +15,224 @@ body {
     overflow: hidden;
 }
 
-.main-menu{
-    display: none;
+.main-menu {
     position: absolute;
+    display: flex;
+    flex-direction: column;
     justify-content: center;
-    text-align: center;
-    border-radius: 10px;
-    height: 80vh;
-    width: 80vw;
-    background-color: #e6e2e2;
-    border: 2px dashed;
+    align-items: center;
+    background-color: #ffffff;
+    padding: 1.5vh 5vw;
+    border-radius: 15px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    width: 60%;
 }
+
+.main-menu h1 {
+    font-size: 4vh;
+    margin-bottom: 1vh;
+    margin-top: 0%;
+    color: #333;
+}
+
+.settings-section {
+    width: 100%;
+    text-align: left;
+}
+
+.settings-section label {
+    font-size: 1.8vh;
+    display: block;
+    margin-bottom: 0.5vh;
+    color: #555;
+}
+
+.settings-section input[type="text"],
+.settings-section input[type="number"],
+.settings-section select {
+    width: 97%;
+    padding: 1vh;
+    margin-top: 0.4vh;
+    margin-bottom: 0.4vh;
+    font-size: 1.8vh;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+fieldset {
+    padding: 1vh 3vw;
+    border: 2px solid #46464680;
+    border-radius: 8px;
+}
+
+legend {
+    font-size: 1.5vh;
+    margin-bottom: 0vh;
+    font-weight: bold;
+    color: #4f5050;
+}
+
+fieldset label {
+    font-size: 1.8vh;
+    margin-right: 2vh;
+    display: inline-block;
+}
+
+input[type="radio"],
+input[type="checkbox"] {
+    margin-right: 0.5vh;
+    accent-color: #575353;
+}
+
+.switch-field {
+	display: flex;
+    flex-wrap: wrap;
+	margin-bottom: 0.5vh;
+	overflow: hidden;
+}
+
+.main-menu h5{
+    font-size: 1.5vh;
+    margin-bottom: 0.8vh;
+}
+
+.switch-field input {
+	position: absolute !important;
+	clip: rect(0, 0, 0, 0);
+	/* height: 1; */
+	/* width: 1px; */
+	/* border: 0; */
+	/* overflow: hidden; */
+}
+
+.switch-field label {
+	background-color: #e4e4e4;
+	color: rgba(0, 0, 0, 0.6);
+	font-size: 1.3vh;
+	line-height: 1.5vh;
+	text-align: center;
+	padding: 1vh 2vw;
+	margin-right: -1px;
+	border: 1px solid rgba(0, 0, 0, 0.2);
+	transition: all 0.1s ease-in-out;
+}
+
+#switch-field-checkbox{
+    justify-content: center;
+}
+
+#switch-field-checkbox label{
+    border-radius: 4px;
+    margin-right: 0.5vw;
+    margin-top: 0.5vh;
+}
+
+.switch-field label:hover {
+	cursor: pointer;
+    background-color: #c2c2c2;
+}
+
+#switch-field-checkbox input:checked + label:hover{
+	cursor: pointer;
+    background-color: #acacac;
+}
+
+.switch-field input:checked + label {
+	background-color: #898a89;
+    color: white;
+}
+
+.switch-field label:first-of-type {
+	border-radius: 4px 0 0 4px;
+}
+
+.switch-field label:last-of-type {
+	border-radius: 0 4px 4px 0;
+}
+
+.extra-settings {
+    display: none;
+}
+
+.start-button {
+    margin-top: 1vh;
+    padding: 1vh 2vh;
+    font-size: 1.8vh;
+    font-weight: bold;
+    color: white;
+    background-color: #999999;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.start-button:hover {
+    background-color: #7c7a7a;
+}
+
+.start-button:active {
+    background-color: #c5c4c4;
+}
+
+/*###############################################
+ ###################Popup styling###############
+ ###############################################*/
+.popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    visibility: hidden;
+}
+
+.loading-container {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    width: 300px;
+}
+
+.loading-bar-container {
+    width: 100%;
+    background-color: #e0e0e0;
+    border-radius: 10px;
+    margin-top: 10px;
+    overflow: hidden;
+}
+
+.loading-animation{
+    animation-name: loading;
+    animation-timing-function: linear;
+}
+
+#loading-bar {
+    height: 20px;
+    background-image: linear-gradient(#0076f571,#007BFF,#0076f571);
+    border-radius: 10px;
+}
+
+@keyframes loading{
+    0%{
+        width: 0%;
+    }
+    100%{
+        width: 100%;
+    }
+}
+
+/* Show popup */
+.show-popup {
+    visibility: visible;
+}
+
 
 /* 
 ##########################################################################
@@ -109,13 +321,15 @@ body {
     position: absolute;
     width: 100%;
     height: 100%;
+    margin: 0px 0px;
+    padding: 0px 0px;
     z-index: -2;
     background-color: #f0f0f0;
     opacity: 0.7;
 }
 
 #scoreboard {
-    /* display: none; */
+    display: none;
     position: absolute;
     width: 100%;
     height: 100%;
