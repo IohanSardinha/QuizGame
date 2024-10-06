@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     fetch('questions.csv')
         .then(response => response.text())
         .then(data => {
-            questions = parseCSV(data);
+            defaultQuestions = parseCSV(data);
             document.addEventListener('keydown', handlePlayerInput);
             setUpMainMenu();
         });
@@ -46,7 +46,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             document.getElementById(`player-name-${i}`).innerHTML = playerNames[i-1]
         }
 
-        if(document.getElementById("question-data-source").selectedIndex == 1){
+        if(document.getElementById("question-data-source").selectedIndex == 0){
+            questions = shuffle(defaultQuestions).slice(0,gameDuration);
+        }
+        else if(document.getElementById("question-data-source").selectedIndex == 1){
             const selectedCategories = [];
             const checkboxes = document.querySelectorAll('input[name="open-trivia-category"]:checked');
 
@@ -93,9 +96,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             document.getElementById("loading-popup").style.visibility = "hidden";
             document.getElementById("loading-bar").classList.remove("loading-animation");
 
-        }else if(document.getElementById("question-data-source").selectedIndex == 0){
+        }else if(document.getElementById("question-data-source").selectedIndex == 2){
             return
         }
+        
 
         playerTimeToAnswer = document.getElementById("answer-time-input").value
 
@@ -153,6 +157,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     function setPlayerTurn(player){
+        if(!turnStarted) return
+        console.log("setPlayerTurn");
         document.getElementById("player-turn-display").innerHTML = `${playerNames[player-1]}'s turn!`;
         document.getElementById("background").style.backgroundColor = playerColors[player-1];
         countDownDisplay("player-turn-counter", playerTimeToAnswer, 1000, nextPlayer, currentPlayer)
@@ -166,6 +172,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     function handlePlayerSelection(player){
+
         if(!roundBlocked.includes(player)){
             playerQueue.push(player);
             roundBlocked.push(player);
@@ -182,7 +189,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     function nextPlayer(){
+        console.log("nextPlayer")
         if((playerQueue.length == 0 && roundBlocked.length == playerNames.length) || (wrongOptions.length == currentQuestion.options.length - 1)){
+
             clearTurn()
             
             document.getElementById(`option-${currentQuestion.answer}`).classList.add('correct')
@@ -190,6 +199,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             setTimeout(nextQuestion, 1500);
         }
         else{
+
             if(playerQueue.length > 0){
                 currentPlayer = playerQueue.splice(0,1);
                 setPlayerTurn(currentPlayer)
@@ -212,6 +222,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         if(currentQuestion.answer == option){
             optionButton.classList.add('correct');
             playerScores[currentPlayer-1] += parseInt(questionScore*scoreMultiplier);
+            turnStarted = false;
             setTimeout(nextQuestion, 1000);
         }
         else{
@@ -229,8 +240,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         if(!turnStarted)
             return
-        
-        console.log(questionScore, scoreMultiplier)
 
         const playerKey = event.key;
         if (['1', '2', '3', '4'].includes(playerKey)) {
@@ -344,7 +353,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     function nextQuestion() {
-        turnStarted = false;
+        
         resetTurn();
 
         if (roundCount >= gameDuration) {
