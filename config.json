@@ -1,0 +1,18 @@
+{
+    "lang":"eng",
+    "strings":{
+        "eng":{
+            "title":"Quiz Game",
+            "settings-duration":"Duration",
+            "5-turns-label":"Fast",
+            "10-turns-label":"Normal",
+            "15-turns-label":"Long",
+            "20-turns-label":"Marathon",
+            "settings-player-names":"Player Names:",
+            "settings-answer-time":"Answer Time (seconds):"
+        },
+        "pt":{
+            "title":"Perguntas e Respostas"
+        }
+    }
+}

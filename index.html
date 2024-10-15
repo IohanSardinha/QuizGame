@@ -6,32 +6,31 @@
     <title>Quiz Game</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="manifest" href="manifest.json">
+    <script src="configurator.js"></script>
 </head>
 <body>
     <div id="background"></div>
 
     <div class="main-menu" id="main-menu">
-        <h1>Quiz Game</h1>
+        <h1 id="title"></h1>
         
 
         <div class="settings-section">
-            <h5>Duration</h5>
+            <h5 id="settings-duration"></h5>
             <div class="switch-field">
                 <input type="radio" id="5-turns" name="turns" value="5"/>
-                <label for="5-turns">Fast</label>
-                <!-- <input type="radio" id="7-turns" name="turns" value="7"/>
-                <label for="7-turns">7</label> -->
+                <label id="5-turns-label" for="5-turns"></label>
                 <input type="radio" id="10-tuns" name="turns" value="10" checked/>
-                <label for="10-tuns">Normal</label>
+                <label id="10-turns-label" for="10-tuns"></label>
                 <input type="radio" id="15-turns" name="turns" value="15"/>
-                <label for="15-turns">Long</label>
+                <label id="15-turns-label" for="15-turns"></label>
                 <input type="radio" id="20-turns" name="turns" value="20" />
-                <label for="20-turns">Marathon</label>
+                <label id="20-turns-label" for="20-turns"></label>
             </div>
         </div>
 
         <div class="settings-section">
-            <label>Player Names:</label>
+            <label id="settings-player-names"></label>
             <input type="text" id="player-name-input-1" placeholder="Player 1">
             <input type="text" id="player-name-input-2" placeholder="Player 2">
             <input type="text" id="player-name-input-3" placeholder="Player 3">
@@ -39,7 +38,7 @@
         </div>
     
         <div class="settings-section">
-            <label>Answer Time (seconds):</label>
+            <label id="settings-answer-time"></label>
             <input id="answer-time-input" type="number" value="3" min="3" max="20">
         </div>
     
@@ -110,6 +109,7 @@
 
     <div id="question-container">
         <div id="question"></div>
+        <div id="question-img"></div>
         <div id="options"></div>
     </div>
 

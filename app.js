@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', async () => {
+    let config = null;
     let ALPHABET = Array.from({ length: 26 }, (v, i) => String.fromCharCode(65 + i));
     let questions = [];
     let currentQuestion = null;
@@ -27,14 +28,22 @@ document.addEventListener('DOMContentLoaded', async () => {
         } 
         return array; 
       }; 
-
-    fetch('questions.csv')
-        .then(response => response.text())
-        .then(data => {
-            defaultQuestions = parseCSV(data);
-            document.addEventListener('keydown', handlePlayerInput);
-            setUpMainMenu();
-        });
+    
+    
+    fetch("./config.json")
+      .then(response => response.json())
+      .then(data => {
+          config = data;
+          reconfigure(config)
+        fetch('questions.csv')
+            .then(response => response.text())
+            .then(data => {
+                defaultQuestions = parseCSV(data);
+                document.addEventListener('keydown', handlePlayerInput);
+                newGame()
+                //setUpMainMenu();
+            });
+      })
 
     async function newGame(){
 
@@ -110,6 +119,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.getElementById('scoreboard').style.display = "block";
 
         isGameOver = false;
+        turnStarted = false;
 
         nextQuestion()
     }
@@ -158,7 +168,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     function setPlayerTurn(player){
         if(!turnStarted) return
-        console.log("setPlayerTurn");
         document.getElementById("player-turn-display").innerHTML = `${playerNames[player-1]}'s turn!`;
         document.getElementById("background").style.backgroundColor = playerColors[player-1];
         countDownDisplay("player-turn-counter", playerTimeToAnswer, 1000, nextPlayer, currentPlayer)
@@ -169,6 +178,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.getElementById("player-turn-counter").innerHTML = ""
         document.getElementById("background").style.backgroundColor = "#f0f0f0"
         document.getElementById("next-player").innerHTML = ""
+        document.getElementById("question-img").innerHTML = ""
     }
 
     function handlePlayerSelection(player){
@@ -189,13 +199,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     function nextPlayer(){
-        console.log("nextPlayer")
         if((playerQueue.length == 0 && roundBlocked.length == playerNames.length) || (wrongOptions.length == currentQuestion.options.length - 1)){
 
             clearTurn()
             
             document.getElementById(`option-${currentQuestion.answer}`).classList.add('correct')
-            
+            turnStarted = false;
             setTimeout(nextQuestion, 1500);
         }
         else{
@@ -250,6 +259,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             
         }else if(playerKey === "ArrowRight"){
             nextQuestion()
+            turnStarted = false;
         }
     }
     
@@ -259,7 +269,13 @@ document.addEventListener('DOMContentLoaded', async () => {
         const result = [];
         lines.forEach(line => {
             const splitLine = line.split(',');
-            result.push({ question: splitLine[0], options: splitLine.slice(1,splitLine.length-1), answer:splitLine[splitLine.length-1] });
+            const hasImage = splitLine[splitLine.length-1].length > 1
+            const imgDisplacement = hasImage?2:1;
+            result.push({ question: splitLine[0], 
+                          options: splitLine.slice(1,splitLine.length-imgDisplacement), 
+                          answer:splitLine[splitLine.length-imgDisplacement], 
+                          image:hasImage?(splitLine[splitLine.length-1]==""?null:splitLine[splitLine.length-1]):null
+                        });
         });
         return result;
     }
@@ -307,7 +323,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         questionIndex = Math.floor(Math.random() * questions.length);
         currentQuestion = questions.splice(questionIndex, 1)[0];
-        
+
+        if(currentQuestion.image){
+            document.getElementById("question-img").innerHTML = `<img src="${currentQuestion.image.includes("http")?"":"images/"}${currentQuestion.image}">`
+        }
+            
         document.getElementById('question').innerHTML = currentQuestion.question.replace(/\\n/g, '<br>');
 
         const optionsDiv = document.getElementById('options');
