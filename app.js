@@ -40,8 +40,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             .then(data => {
                 defaultQuestions = parseCSV(data);
                 document.addEventListener('keydown', handlePlayerInput);
-                newGame()
-                //setUpMainMenu();
+                //newGame()
+                setUpMainMenu();
             });
       })
 

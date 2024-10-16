@@ -9,10 +9,37 @@
             "15-turns-label":"Long",
             "20-turns-label":"Marathon",
             "settings-player-names":"Player Names:",
-            "settings-answer-time":"Answer Time (seconds):"
+            "settings-answer-time":"Answer Time (seconds):",
+            "settings-question-source":"Question Source:",
+            "Default":"Default",
+            "Open-Trivia-DB":"Open Trivia DB",
+            "Upload-csv":"Upload CSV",
+            "difficulty-any-label":"Mixed",
+            "difficulty-easy-label":"Easy",
+            "difficulty-medium-label":"Medium",
+            "difficulty-hard-label":"Hard",
+            "categories":"Categories",
+            "category-General-label":"General Knowledge",
+            "category-Science-label":"Science & Nature",
+            "category-Geography-label":"Geography",
+            "category-History-label":"History",
+            "category-Sports-label":"Sports",
+            "category-Art-label":"Art",
+            "category-Politics-label":"Politics",
+            "category-Animals-label":"Animals",
+            "upload-your-csv":"Upload your .csv file",
+            "start-button":"START",
+            "difficulty":"Difficulty",
+            "retreiving-questions":"Retreiving Questions...",
+            "play-again":"Play Again<br>(press anything)",
+            "quiz-over":"Quiz Over!",
+            "first":"1st",
+            "second":"2nd",
+            "third":"3rd",
+            "fourth":"4th"
         },
         "pt":{
             "title":"Perguntas e Respostas"
         }
     }
-}
+} 
