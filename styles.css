@@ -407,6 +407,12 @@ input[type="checkbox"] {
     animation: shake 10s infinite;
 }
 
+#question-img{
+    display: none;
+    height: 15vh;
+    margin-bottom: 20px;
+}
+
 @keyframes shake {
     0%, 80% {
         transform: rotate(0deg);

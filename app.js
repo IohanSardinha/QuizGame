@@ -178,7 +178,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.getElementById("player-turn-counter").innerHTML = ""
         document.getElementById("background").style.backgroundColor = "#f0f0f0"
         document.getElementById("next-player").innerHTML = ""
-        document.getElementById("question-img").innerHTML = ""
+        document.getElementById("question-img").src = ""
+        document.getElementById('question-img').style.display = "none";
     }
 
     function handlePlayerSelection(player){
@@ -325,7 +326,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         currentQuestion = questions.splice(questionIndex, 1)[0];
 
         if(currentQuestion.image){
-            document.getElementById("question-img").innerHTML = `<img src="${currentQuestion.image.includes("http")?"":"images/"}${currentQuestion.image}">`
+            document.getElementById("question-img").src = `${currentQuestion.image.includes("http")?"":"images/"}${currentQuestion.image}`
+            document.getElementById('question-img').style.display = "block";
         }
             
         document.getElementById('question').innerHTML = currentQuestion.question.replace(/\\n/g, '<br>');
