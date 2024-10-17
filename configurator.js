@@ -6,3 +6,7 @@ function reconfigure(config){
             element.innerHTML = value;
     }
 }
+
+function getString(config, key){
+    return config.strings[config.lang][key];
+}

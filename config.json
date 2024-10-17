@@ -1,5 +1,5 @@
 {
-    "lang":"eng",
+    "lang":"pt",
     "strings":{
         "eng":{
             "title":"Quiz Game",
@@ -36,10 +36,50 @@
             "first":"1st",
             "second":"2nd",
             "third":"3rd",
-            "fourth":"4th"
+            "fourth":"4th",
+            "player-turn-before-str":"",
+            "player-turn-after-str":"'s turn!",
+            "next":"Next:"
         },
         "pt":{
-            "title":"Perguntas e Respostas"
+            "title":"Jode de Perguntas e Respostas",
+            "settings-duration":"Duração",
+            "5-turns-label":"Rápido",
+            "10-turns-label":"Normal",
+            "15-turns-label":"Grande",
+            "20-turns-label":"Maratona",
+            "settings-player-names":"Nomes:",
+            "settings-answer-time":"Tempo para resposta (segundos):",
+            "settings-question-source":"Origem das perguntas:",
+            "Default":"Padrão",
+            "Open-Trivia-DB":"Open Trivia DB",
+            "Upload-csv":"Submeter CSV",
+            "difficulty-any-label":"Todos",
+            "difficulty-easy-label":"Fácil",
+            "difficulty-medium-label":"Médio",
+            "difficulty-hard-label":"Difícil",
+            "categories":"Categories",
+            "category-General-label":"General Knowledge",
+            "category-Science-label":"Science & Nature",
+            "category-Geography-label":"Geography",
+            "category-History-label":"History",
+            "category-Sports-label":"Sports",
+            "category-Art-label":"Art",
+            "category-Politics-label":"Politics",
+            "category-Animals-label":"Animals",
+            "upload-your-csv":"Submete seu arquivo .csv",
+            "start-button":"COMEÇAR",
+            "difficulty":"Dificuldade",
+            "retreiving-questions":"Obtendo Perguntas...",
+            "play-again":"Jogar de novo<br>(pressione qualquer tecla)",
+            "quiz-over":"Fim do jogo!",
+            "first":"1º",
+            "second":"2º",
+            "third":"3º",
+            "fourth":"4º",
+            "player-turn-before-str":"Vez de ",
+            "player-turn-after-str":"!",
+            "next":"Próximo:"
         }
     }
 } 

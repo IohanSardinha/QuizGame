@@ -168,7 +168,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     function setPlayerTurn(player){
         if(!turnStarted) return
-        document.getElementById("player-turn-display").innerHTML = `${playerNames[player-1]}'s turn!`;
+        document.getElementById("player-turn-display").innerHTML = `${getString(config, "player-turn-before-str")}${playerNames[player-1]}${getString(config, "player-turn-after-str")}`;
         document.getElementById("background").style.backgroundColor = playerColors[player-1];
         countDownDisplay("player-turn-counter", playerTimeToAnswer, 1000, nextPlayer, currentPlayer)
     }
@@ -194,7 +194,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
 
             if(playerQueue.length > 0){
-                document.getElementById("next-player").innerHTML = `Next: ${playerNames[playerQueue[0]-1]}`
+                document.getElementById("next-player").innerHTML = `${getString(config, "next")} ${playerNames[playerQueue[0]-1]}`
             }
         }
     }
@@ -214,7 +214,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 currentPlayer = playerQueue.splice(0,1);
                 setPlayerTurn(currentPlayer)
                 if(playerQueue.length > 0)
-                    document.getElementById("next-player").innerHTML = `Next: ${playerNames[playerQueue[0]-1]}`
+                    document.getElementById("next-player").innerHTML = `${getString(config, "next")} ${playerNames[playerQueue[0]-1]}`
                 else
                     document.getElementById("next-player").innerHTML = ``
             }else{
