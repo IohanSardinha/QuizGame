@@ -1,5 +1,5 @@
 {
-    "lang":"pt",
+    "lang":"eng",
     "strings":{
         "eng":{
             "title":"Quiz Game",
@@ -42,7 +42,7 @@
             "next":"Next:"
         },
         "pt":{
-            "title":"Jode de Perguntas e Respostas",
+            "title":"Jogo de Perguntas e Respostas",
             "settings-duration":"Duração",
             "5-turns-label":"Rápido",
             "10-turns-label":"Normal",
