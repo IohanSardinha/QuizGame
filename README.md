@@ -2,7 +2,8 @@
 
 - [x] Player Queue display
 - [x] Display Results
-- [ ] Make it easily modifiable (config file)
-- [ ] Start Menu
-  - [ ] Config file
-  - [ ] Translation
+- [X] Make it easily modifiable (config file)
+- [X] Start Menu
+  - [X] Config file
+  - [X] Translation
+  - [ ] Add button to change language
