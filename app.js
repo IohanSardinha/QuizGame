@@ -17,6 +17,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     let gameDuration = 10;
     let roundCount = 0;
     let isGameOver = false;
+    let uploadedFile = null;
 
     let playerNames = ["Player 1", "Player 2", "Player 3", "Player 4"]
     let playerColors = ["#ff9999","#99ff99","#9999ff","#ffff99"]
@@ -29,6 +30,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         return array; 
       }; 
     
+    document.getElementById("upload-file-input").onchange = (event)=>{
+        uploadedFile = event.target.files[0];
+    }
     
     fetch("./config.json")
       .then(response => response.json())
@@ -106,7 +110,20 @@ document.addEventListener('DOMContentLoaded', async () => {
             document.getElementById("loading-bar").classList.remove("loading-animation");
 
         }else if(document.getElementById("question-data-source").selectedIndex == 2){
-            return
+            try{
+                const reader = new FileReader();
+
+                reader.onload = (e)=>{
+                    questions = parseCSV(e.target.result);            
+                }
+
+                reader.readAsText(uploadedFile);
+        
+            }catch(ex){
+                console.log(ex);
+                alert("Something went wrong reading the file...");
+            }
+            questions = shuffle(questions).slice(0,gameDuration);
         }
         
 

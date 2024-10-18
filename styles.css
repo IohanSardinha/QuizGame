@@ -28,6 +28,10 @@ body {
     width: 60%;
 }
 
+#upload-questions-settings{
+    font-size: 2vh;
+}
+
 .main-menu h1 {
     font-size: 4vh;
     margin-bottom: 1vh;
