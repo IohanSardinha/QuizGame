@@ -23,6 +23,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     let playerNames = ["Player 1", "Player 2", "Player 3", "Player 4"]
     let playerColors = ["#ff9999","#99ff99","#9999ff","#ffff99"]
 
+    let audioFiles = ["background.mp3","countdown.wav", "wrongAnswer.wav", "correctAnswer.wav"];
+    let audioFX = {};
+
+    for(let fileName of audioFiles){
+        audioFX[fileName.replace(".wav","").replace(".mp3","")] = new Audio(`media/audio/${fileName}`);
+    }
+
     const shuffle = (array) => { 
         for (let i = array.length - 1; i > 0; i--) { 
           const j = Math.floor(Math.random() * (i + 1)); 
@@ -51,6 +58,12 @@ document.addEventListener('DOMContentLoaded', async () => {
       })
 
     async function newGame(){
+
+        if(audioFX.background.paused){
+            audioFX.background.loop = true;
+            audioFX.background.play();
+            audioFX.background.volume = 0.2;
+        }
 
         isInMenu = false;
 
@@ -257,12 +270,15 @@ document.addEventListener('DOMContentLoaded', async () => {
             optionButton.classList.add('correct');
             playerScores[currentPlayer-1] += parseInt(questionScore*scoreMultiplier);
             turnStarted = false;
-            setTimeout(nextQuestion, 1000);
+            audioFX.correctAnswer.play();
+            setTimeout(nextQuestion, 1500);
         }
         else{
             scoreMultiplier -= scoreReduction;
             optionButton.classList.add('wrong')
             wrongOptions.push(option)
+
+            audioFX.wrongAnswer.play()
 
             nextPlayer();
         }
@@ -274,8 +290,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             document.getElementById('game-over').style.display = "none";
             isInMenu = true;
         }
-
-        if(isInMenu && ["1","2","3","3","Enter", " "].includes(event.key)){
+        else if(isInMenu && ["1","2","3","3","Enter", " "].includes(event.key)){
             if (!(document.activeElement == document.getElementById("player-name-input-1"))
                 && !(document.activeElement == document.getElementById("player-name-input-2"))
                 && !(document.activeElement == document.getElementById("player-name-input-3"))
@@ -432,7 +447,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         document.getElementById('question-container').style.display = "none";
         document.getElementById('center-display').style.display = "flex";
-
+        
         setTimeout(()=>countDownDisplay("center-display", 3, 1000, nextQuestionFinish, false), 250)
+        setTimeout(()=>audioFX.countdown.play(), 800)
     }
 });
