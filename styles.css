@@ -51,6 +51,16 @@ body {
     color: #555;
 }
 
+#settings-languages{
+    text-align-last: center;
+    padding: 0.3vh;
+    padding-left: 1%;
+    font-size: 2vh;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    align-self: self-end;
+}
+
 .settings-section input[type="text"],
 .settings-section input[type="number"],
 .settings-section select {

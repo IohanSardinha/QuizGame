@@ -18,6 +18,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     let roundCount = 0;
     let isGameOver = false;
     let uploadedFile = null;
+    let isInMenu = false;
 
     let playerNames = ["Player 1", "Player 2", "Player 3", "Player 4"]
     let playerColors = ["#ff9999","#99ff99","#9999ff","#ffff99"]
@@ -38,18 +39,20 @@ document.addEventListener('DOMContentLoaded', async () => {
       .then(response => response.json())
       .then(data => {
           config = data;
+          loadConfig(config)
           reconfigure(config)
         fetch('questions.csv')
             .then(response => response.text())
             .then(data => {
                 defaultQuestions = parseCSV(data);
                 document.addEventListener('keydown', handlePlayerInput);
-                //newGame()
                 setUpMainMenu();
             });
       })
 
     async function newGame(){
+
+        isInMenu = false;
 
         gameDuration = document.querySelector('input[name="turns"]:checked').value;
 
@@ -160,11 +163,15 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     function setUpMainMenu(){
 
+        isInMenu = true;
+
         showExtendedSettings(document.getElementById("question-data-source"));
 
         document.getElementById("question-data-source").addEventListener("change",(e)=>showExtendedSettings(e.target));
 
         document.getElementById("start-button").onclick = newGame
+
+        document.getElementById("answer-time-input").onchange = (e) =>  e.target.value = Math.min(Math.max(e.target.value, 3), 20)
     }
 
     function countDownDisplay(id, val, interval, finish, player){
@@ -262,14 +269,34 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     function handlePlayerInput(event) {
-        if(isGameOver)
-            newGame()
+        if(isGameOver){
+            document.getElementById("main-menu").style.display = "flex";
+            document.getElementById('game-over').style.display = "none";
+            isInMenu = true;
+        }
+
+        if(isInMenu && ["1","2","3","3","Enter", " "].includes(event.key)){
+            if (!(document.activeElement == document.getElementById("player-name-input-1"))
+                && !(document.activeElement == document.getElementById("player-name-input-2"))
+                && !(document.activeElement == document.getElementById("player-name-input-3"))
+                && !(document.activeElement == document.getElementById("player-name-input-4"))
+                && !(document.activeElement == document.getElementById("answer-time-input"))) {
+                newGame()
+            }
+        }
 
         if(!turnStarted)
             return
 
         const playerKey = event.key;
-        if (['1', '2', '3', '4'].includes(playerKey)) {
+        if(playerKey == "Escape"){
+            document.getElementById("main-menu").style.display = "flex";
+            document.getElementById('game-over').style.display = "none";
+            document.getElementById('question-container').style.display = "none";
+            document.getElementById('scoreboard').style.display = "none";
+            isInMenu = true;
+        }
+        else if (['1', '2', '3', '4'].includes(playerKey)) {
             handlePlayerSelection(parseInt(playerKey))  
 
         } else if (ALPHABET.includes(playerKey.toUpperCase())) {
@@ -386,8 +413,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.getElementById('fourth-place-name').innerHTML = players[3].name
         
         document.getElementById('play-again').onclick = ()=>{
-            document.getElementById("main-menu").style.display = "block";
+            document.getElementById("main-menu").style.display = "flex";
             document.getElementById('game-over').style.display = "none";
+            isInMenu = true;
         }
     }
 
