@@ -6,4 +6,4 @@
 - [X] Start Menu
   - [X] Config file
   - [X] Translation
-  - [ ] Add button to change language
+  - [x] Add button to change language
