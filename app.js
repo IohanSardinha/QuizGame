@@ -3,23 +3,23 @@ document.addEventListener('DOMContentLoaded', async () => {
     let ALPHABET = Array.from({ length: 26 }, (v, i) => String.fromCharCode(65 + i));
     let questions = [];
     let currentQuestion = null;
+    let maxPlayers = 4;
 
-    let playerScores = [0,0,0,0];
+    let playerTimeToAnswer;
+    let gameDuration;
     let playerQueue = [];
     let roundBlocked = []
     let currentPlayer = null;
     let scoreMultiplier = 1;
     let scoreReduction = 0.25;
-    let questionScore = 100;
-    let playerTimeToAnswer = 10;
     let wrongOptions = []
     let turnStarted = false;
-    let gameDuration = 10;
     let roundCount = 0;
     let isGameOver = false;
     let uploadedFile = null;
     let isInMenu = false;
-
+    
+    let playerScores = [0,0,0,0];
     let playerNames = ["Player 1", "Player 2", "Player 3", "Player 4"]
     let playerColors = ["#ff9999","#99ff99","#9999ff","#ffff99"]
 
@@ -69,10 +69,38 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         gameDuration = document.querySelector('input[name="turns"]:checked').value;
 
+        playerScores = [];
+        playerNames = [];
+        playerColors = [];
+
+        for(let i = 1; i <= maxPlayers; i++){
+            const checkbox = document.getElementById(`player-checkbox-input-${i}`);
+            document.querySelector(`#player${i} .score`).innerHTML = 0;
+
+            if(checkbox.checked){
+                const el = document.getElementById(`player-name-input-${i}`)
+                playerScores.push(0);
+                playerNames.push(el.value || el.placeholder)
+                playerColors.push(document.getElementById(`player-color-input-${i}`).value)
+            }
+        }
+
+        if(playerNames.length == 0){
+            alert("You need at least one player!");
+            return;
+        }
+        
         for(let i = 1; i <= playerNames.length; i++){
-            const el = document.getElementById(`player-name-input-${i}`)
-            playerNames[i-1] = el.value || el.placeholder;
+            document.getElementById(`player${i}`).style.display = "flex"
+            for(let el of document.querySelectorAll(`.player${i}`)){
+                el.style.backgroundColor = playerColors[i-1];
+                if(brightnessByColor(playerColors[i-1]) < 125) el.style.color = "white";
+                else el.style.color = "black";
+            }
             document.getElementById(`player-name-${i}`).innerHTML = playerNames[i-1]
+        }
+        for(let i = playerColors.length+1; i <= maxPlayers; i++){
+            document.getElementById(`player${i}`).style.display = "none"
         }
 
         if(document.getElementById("question-data-source").selectedIndex == 0){
@@ -206,7 +234,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     function setPlayerTurn(player){
         if(!turnStarted) return
         document.getElementById("player-turn-display").innerHTML = `${getString(config, "player-turn-before-str")}${playerNames[player-1]}${getString(config, "player-turn-after-str")}`;
-        document.getElementById("background").style.backgroundColor = playerColors[player-1];
+        document.getElementById("background").style.backgroundColor = playerColors[player-1]
+        //document.getElementById()
         countDownDisplay("player-turn-counter", playerTimeToAnswer, 1000, nextPlayer, currentPlayer)
     }
 
@@ -224,6 +253,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         if(!roundBlocked.includes(player)){
             playerQueue.push(player);
             roundBlocked.push(player);
+
+            document.getElementById(`player${player}Interaction`).classList.add("playerInteraction");
+            setTimeout(() => {
+                document.getElementById(`player${player}Interaction`).classList.remove("playerInteraction");
+            }, 1000);
 
             if(currentPlayer == null){
                 currentPlayer = playerQueue.splice(0,1);
@@ -261,6 +295,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
+
     function handlePlayerOption(option){
         if(wrongOptions.includes(option) || currentPlayer == null)
             return
@@ -268,7 +303,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         optionButton = document.getElementById(`option-${option}`)
         if(currentQuestion.answer == option){
             optionButton.classList.add('correct');
-            playerScores[currentPlayer-1] += parseInt(questionScore*scoreMultiplier);
+            playerScores[currentPlayer-1] += parseInt(config.questionScore*scoreMultiplier);
             turnStarted = false;
             audioFX.correctAnswer.play();
             setTimeout(nextQuestion, 1500);
@@ -311,7 +346,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             document.getElementById('scoreboard').style.display = "none";
             isInMenu = true;
         }
-        else if (['1', '2', '3', '4'].includes(playerKey)) {
+        else if (['1', '2', '3', '4'].slice(0,playerNames.length).includes(playerKey)) {
             handlePlayerSelection(parseInt(playerKey))  
 
         } else if (ALPHABET.includes(playerKey.toUpperCase())) {
@@ -373,7 +408,19 @@ document.addEventListener('DOMContentLoaded', async () => {
         clearTurn()
 
         for(let i = 0; i < playerScores.length; i++){
-            document.querySelector(`#player${i+1} .score`).innerHTML = playerScores[i];
+            
+            const currScore = parseInt(document.querySelector(`#player${i+1} .score`).innerHTML);
+            
+            const timestep =  1000/(playerScores[i] - currScore);
+
+            const updateScore = () => {
+                const currScore = parseInt(document.querySelector(`#player${i+1} .score`).innerHTML);
+                if(currScore < playerScores[i]){
+                    document.querySelector(`#player${i+1} .score`).innerHTML = currScore + 1;
+                    setTimeout(updateScore, timestep)
+                }
+            }
+            if(currScore != playerScores[i]) setTimeout(updateScore, timestep);
         }
     }
 
