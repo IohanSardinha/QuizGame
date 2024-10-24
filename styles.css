@@ -61,6 +61,11 @@ body {
     align-self: self-end;
 }
 
+.settings-line{
+    width: 97%;
+    display: flex;
+    align-items: center;
+}
 .settings-section input[type="text"],
 .settings-section input[type="number"],
 .settings-section select {
@@ -71,6 +76,13 @@ body {
     font-size: 1.8vh;
     border: 1px solid #ccc;
     border-radius: 5px;
+}
+
+.settings-section input[type="color"]{
+    width: 5vh;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    margin-right: 1vh;
 }
 
 fieldset {
@@ -342,6 +354,27 @@ input[type="checkbox"] {
     opacity: 0.7;
 }
 
+.playerInteraction {
+    position: absolute;
+    width: 15vh; 
+    height: 15vh;
+    z-index: -2;
+    opacity: 1;
+    animation: ball 1s linear;
+    border-radius: 100%;
+}
+
+@keyframes ball {
+    0%{
+        transform: scale(1);
+        opacity: 0.5;
+    }
+    100%{
+        transform: scale(30);
+        opacity: 0;
+    }
+}
+
 #scoreboard {
     display: none;
     position: absolute;
@@ -376,27 +409,25 @@ input[type="checkbox"] {
     margin-top: 5%;
 }
 
-#player1 {
+.player1 {
     top: 10px;
     left: 10px;
     background-color: #ff9999; /* Light red */
 }
 
-
-
-#player2 {
+.player2 {
     top: 10px;
     right: 10px;
     background-color: #99ff99; /* Light green */
 }
 
-#player3 {
+.player3 {
     bottom: 10px;
     left: 10px;
     background-color: #9999ff; /* Light blue */
 }
 
-#player4 {
+.player4 {
     bottom: 10px;
     right: 10px;
     background-color: #ffff99; /* Light yellow */

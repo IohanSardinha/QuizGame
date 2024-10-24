@@ -6,10 +6,18 @@
     <title>Quiz Game</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="manifest" href="manifest.json">
+    
     <script src="configurator.js"></script>
 </head>
 <body>
     <div id="background"></div>
+     <div id="player-interactions">
+        <div id="player1Interaction" class="player1"></div>
+        <div id="player2Interaction" class="player2"></div>
+        <div id="player3Interaction" class="player3"></div>
+        <div id="player4Interaction" class="player4"></div>
+    </div>
+
 
     <div class="main-menu" id="main-menu">
 
@@ -35,10 +43,10 @@
 
         <div class="settings-section">
             <label id="settings-player-names"></label>
-            <input type="text" id="player-name-input-1" placeholder="Player 1">
-            <input type="text" id="player-name-input-2" placeholder="Player 2">
-            <input type="text" id="player-name-input-3" placeholder="Player 3">
-            <input type="text" id="player-name-input-4" placeholder="Player 4">
+            <div class="settings-line"><input type="checkbox" id="player-checkbox-input-1" checked> <input type="color" id="player-color-input-1" value="#ff9999"> <input  type="text" id="player-name-input-1" placeholder="Player 1"></div>
+            <div class="settings-line"><input type="checkbox" id="player-checkbox-input-2" checked> <input type="color" id="player-color-input-2" value="#99ff99"> <input type="text" id="player-name-input-2" placeholder="Player 2"></div>
+            <div class="settings-line"><input type="checkbox" id="player-checkbox-input-3" checked> <input type="color" id="player-color-input-3" value="#9999ff"> <input type="text" id="player-name-input-3" placeholder="Player 3"></div>
+            <div class="settings-line"><input type="checkbox" id="player-checkbox-input-4" checked> <input type="color" id="player-color-input-4" value="#ffff99"> <input type="text" id="player-name-input-4" placeholder="Player 4"></div>
         </div>
     
         <div class="settings-section">
@@ -120,19 +128,19 @@
     <div id="next-player"></div>
     
     <div id="scoreboard">
-        <div id="player1" class="player-score">
+        <div id="player1" class="player-score player1">
             <div class="score"></div>
             <div id="player-name-1" class="name"></div>
         </div>
-        <div id="player2" class="player-score">
+        <div id="player2" class="player-score player2">
             <div class="score"></div>
             <div id="player-name-2" class="name"></div>
         </div>
-        <div id="player3" class="player-score">
+        <div id="player3" class="player-score player3">
             <div class="score"></div>
             <div id="player-name-3" class="name"></div>
         </div>
-        <div id="player4" class="player-score">
+        <div id="player4" class="player-score player4">
             <div class="score"></div>
             <div id="player-name-4" class="name"></div>
         </div>
