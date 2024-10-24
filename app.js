@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     let questions = [];
     let currentQuestion = null;
     let maxPlayers = 4;
+    let maxOptions = 7;
 
     let playerTimeToAnswer;
     let gameDuration;
@@ -19,9 +20,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     let uploadedFile = null;
     let isInMenu = false;
     
-    let playerScores = [0,0,0,0];
-    let playerNames = ["Player 1", "Player 2", "Player 3", "Player 4"]
-    let playerColors = ["#ff9999","#99ff99","#9999ff","#ffff99"]
+    let playerScores = [];
+    let playerNames = []
+    let playerColors = []
 
     let audioFiles = ["background.mp3","countdown.wav", "wrongAnswer.wav", "correctAnswer.wav"];
     let audioFX = {};
@@ -142,11 +143,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             questions = OTDBQuestions.map((question)=>{
                 
-                let O = shuffle(question.incorrect_answers.concat([question.correct_answer]))
-                let A = O.indexOf(question.correct_answer)
-                O.map(decodeURI)
-                let Q = {"question":decodeURI(question.question), options:O, answer:ALPHABET[A]}
-
+                let Q = {question:decodeURI(question.question),
+                         options:question.incorrect_answers.map(decodeURI),
+                         correct:decodeURI(question.correct_answer)}
                 return Q
             });
 
@@ -271,7 +270,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     function nextPlayer(){
-        if((playerQueue.length == 0 && roundBlocked.length == playerNames.length) || (wrongOptions.length == currentQuestion.options.length - 1)){
+        if((playerQueue.length == 0 && roundBlocked.length == playerNames.length) || (wrongOptions.length == currentQuestion.options.length)){
 
             clearTurn()
             
@@ -364,13 +363,16 @@ document.addEventListener('DOMContentLoaded', async () => {
         const result = [];
         lines.forEach(line => {
             const splitLine = line.split(',');
-            const hasImage = splitLine[splitLine.length-1].length > 1
-            const imgDisplacement = hasImage?2:1;
-            result.push({ question: splitLine[0], 
-                          options: splitLine.slice(1,splitLine.length-imgDisplacement), 
-                          answer:splitLine[splitLine.length-imgDisplacement], 
-                          image:hasImage?(splitLine[splitLine.length-1]==""?null:splitLine[splitLine.length-1]):null
-                        });
+            const question = splitLine[0];
+            const answer = splitLine[1];
+            const otherSize = splitLine[2];
+            const options = splitLine.slice(3,3+otherSize)
+            
+            result.push({
+                question:question,
+                options:options,
+                correct:answer
+            })
         });
         return result;
     }
@@ -440,10 +442,18 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         const optionsDiv = document.getElementById('options');
         optionsDiv.innerHTML = '';
+    
+        const options = shuffle(currentQuestion.options).slice(0,maxOptions-1)
+        options.push(currentQuestion.correct)
+        shuffle(options)
         
-        currentQuestion.options.forEach((option, index) => {
+
+        options.forEach((option, index) => {
+            if(option == currentQuestion.correct)
+                currentQuestion.answer = ALPHABET[index];
             optionsDiv.appendChild(createOption(index, option));
         });
+
         turnStarted = true;
     }
 
