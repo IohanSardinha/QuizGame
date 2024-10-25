@@ -4,7 +4,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     let questions = [];
     let currentQuestion = null;
     let maxPlayers = 4;
-    let maxOptions = 7;
 
     let playerTimeToAnswer;
     let gameDuration;
@@ -12,7 +11,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     let roundBlocked = []
     let currentPlayer = null;
     let scoreMultiplier = 1;
-    let scoreReduction = 0.25;
+    let scoreReduction;
     let wrongOptions = []
     let turnStarted = false;
     let roundCount = 0;
@@ -243,8 +242,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.getElementById("player-turn-counter").innerHTML = ""
         document.getElementById("background").style.backgroundColor = "#f0f0f0"
         document.getElementById("next-player").innerHTML = ""
-        document.getElementById("question-img").src = ""
-        document.getElementById('question-img').style.display = "none";
     }
 
     function handlePlayerSelection(player){
@@ -365,14 +362,21 @@ document.addEventListener('DOMContentLoaded', async () => {
             const splitLine = line.split(',');
             const question = splitLine[0];
             const answer = splitLine[1];
-            const otherSize = splitLine[2];
+            const otherSize = parseInt(splitLine[2]);
             const options = splitLine.slice(3,3+otherSize)
             
-            result.push({
+            const questionObj = {
                 question:question,
                 options:options,
                 correct:answer
-            })
+            }
+
+            for(let entry of splitLine.slice(3+otherSize)){
+                const splitEntry = entry.split(":");
+                if(splitEntry[0] == "img") questionObj["image"] = splitEntry.slice(1).join(":");
+            }
+            
+            result.push(questionObj)
         });
         return result;
     }
@@ -408,6 +412,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         roundBlocked = [];
         wrongOptions = []
         clearTurn()
+        document.getElementById('question-img').style.display = "none";
+        document.getElementById("question-img").src = ""
 
         for(let i = 0; i < playerScores.length; i++){
             
@@ -443,7 +449,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const optionsDiv = document.getElementById('options');
         optionsDiv.innerHTML = '';
     
-        const options = shuffle(currentQuestion.options).slice(0,maxOptions-1)
+        const options = shuffle(currentQuestion.options).slice(0,config.maxOptions-1)
         options.push(currentQuestion.correct)
         shuffle(options)
         
@@ -453,6 +459,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                 currentQuestion.answer = ALPHABET[index];
             optionsDiv.appendChild(createOption(index, option));
         });
+
+        scoreReduction = 1 / (options.length-1);
 
         turnStarted = true;
     }
@@ -473,17 +481,34 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.getElementById('first-place-score').innerHTML = players[0].score
         document.getElementById('first-place').innerHTML = players[0].name
         
-        document.getElementById('second-place-score').innerHTML = players[1].score
-        document.getElementById('second-place').innerHTML = players[1].name
-        document.querySelector('.second').style.height = `${30*((players[1].score+1)/(players[0].score+1))}vh`
+        console.log(playerNames.length)
 
-        document.getElementById('third-place-score').innerHTML = players[2].score
-        document.getElementById('third-place').innerHTML = players[2].name
-        document.querySelector('.third').style.height = `${30*((players[2].score+1)/(players[0].score+1))}vh`
-
-        document.getElementById('fourth-place-score').innerHTML = players[3].score
-        document.getElementById('fourth-place-name').innerHTML = players[3].name
-        
+        if(playerNames.length > 1){
+            document.getElementById("podiumSecond").style.display = "flex";
+            document.getElementById('second-place-score').innerHTML = players[1].score
+            document.getElementById('second-place').innerHTML = players[1].name
+            document.querySelector('.second').style.height = `${30*((players[1].score+1)/(players[0].score+1))}vh`
+        }
+        else{
+            document.getElementById("podiumSecond").style.display = "none";
+        }
+        if(playerNames.length > 2){
+            document.getElementById("podiumThird").style.display = "flex";
+            document.getElementById('third-place-score').innerHTML = players[2].score
+            document.getElementById('third-place').innerHTML = players[2].name
+            document.querySelector('.third').style.height = `${30*((players[2].score+1)/(players[0].score+1))}vh`
+        }
+        else{
+            document.getElementById("podiumThird").style.display = "none";
+        }
+        if(playerNames.length > 3){
+            document.getElementById("fourth-place").style.display = "block";
+            document.getElementById('fourth-place-score').innerHTML = players[3].score
+            document.getElementById('fourth-place-name').innerHTML = players[3].name
+        }
+        else{
+            document.getElementById("fourth-place").style.display = "none";
+        }
         document.getElementById('play-again').onclick = ()=>{
             document.getElementById("main-menu").style.display = "flex";
             document.getElementById('game-over').style.display = "none";
