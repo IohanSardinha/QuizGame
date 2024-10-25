@@ -1,7 +1,8 @@
 {
     "lang":"🇧🇷",
     "questionScore":100,
-    
+    "maxOptions": 6,
+    "maxQuestionTime":false,
     
     "strings":{
         "🇿🇦":{
